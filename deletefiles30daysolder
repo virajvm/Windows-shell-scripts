@@ -1,0 +1,2 @@
+psexec \\10.13.115.215 cmd
+ForFiles /p "C:\NextGenADR\PostClassificationService\Logs" /s /M *.log /d -30 /c "cmd /c del /q @file"
