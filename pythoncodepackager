@@ -1,4 +1,4 @@
 For making setup including dependencies of python code run below commands in cmd terminal (pre req-pip install pyinstaller from cmd)
-pyinstaller <filename>.py
+pyinstaller filename.py
 OR
-pyinstaller --onedir <filename>.py
+pyinstaller --onedir filename.py
