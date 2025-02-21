@@ -1,0 +1,4 @@
+For making setup including dependencies of python code run below commands in cmd terminal
+pyinstaller <filename>.py
+OR
+pyinstaller --onedir <filename>.py
