@@ -1,0 +1,1 @@
+type *.* | find "Gen" >> tst1.txt
