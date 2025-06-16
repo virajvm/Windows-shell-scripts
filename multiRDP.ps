@@ -1,0 +1,7 @@
+$servers=Get-Content "C:\RDP-ONLY\IP_LIST.txt"
+foreach($server in $servers){
+    cmdkey /generic:$server /user:"dvad\appuser" /pass:"Appl!c@t10nMgmt"
+    mstsc /v: $server
+        sleep 5
+    cmdkey /delete:$server
+}
