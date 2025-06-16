@@ -1,0 +1,4 @@
+For making setup/package of python code including dependencies use below commands:-
+pyinstaller <filename>.py
+OR
+pyinstaller --onedir <filename>.py
