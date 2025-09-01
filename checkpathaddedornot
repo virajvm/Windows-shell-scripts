@@ -1,0 +1,2 @@
+psexec @iplist.txt cmd /c echo %JAVAHOME% | findstr /I "C:\Program Files\Java\jre8\bin" >> logfile.log
+psexec @iplist.txt cmd /c echo %Path% | findstr /I "C:\Program Files\Java\jre8\bin" >> logfile.log
