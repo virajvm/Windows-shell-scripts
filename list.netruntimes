@@ -1,0 +1,1 @@
+psexec @iplist.txt cmd /c dotnet --list-runtimes /value >> logfile.log
