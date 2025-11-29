@@ -1,0 +1,2 @@
+psexec @hostnames.txt cmd /c "net user rundeck RunD3ckUserAccount@024 /add /y && net localgroup administrators rundeck /add" >> logfile.log
+psexec @hostnames.txt cmd /c "wmic path Win32_UserAccount where Name='rundeck' set PasswordExpires=false" >> logfile.log
