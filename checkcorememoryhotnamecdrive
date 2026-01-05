@@ -1,0 +1,43 @@
+$Servers = Get-Content 'C:\Tools\CPU-Memory\IP_List.txt'
+$logFile = 'C:\Tools\CPU-Memory\Logs.txt'
+$errorLogFile = 'C:\Tools\CPU-Memory\Logs1.txt'
+
+foreach ($Server in $Servers) {
+    try {
+        # Attempt to run the command remotely
+        $result = Invoke-Command -ComputerName $Server -ScriptBlock {
+            $info = Get-ComputerInfo | Select-Object CsName, CsNumberOfProcessors, OsTotalVisibleMemorySize
+
+            # Get disk info using CIM (faster and modern)
+            $disks = Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DriveType=3" | Select-Object DeviceID, Size, FreeSpace
+
+            return [PSCustomObject]@{
+                CsName = $info.CsName
+                CPUCores = $info.CsNumberOfProcessors
+                MemoryGB = [Math]::Round($info.OsTotalVisibleMemorySize / 1MB, 2)
+                Disks = $disks
+            }
+        }
+
+        # Log the output
+        if ($result) {
+            $formatted = "$($result.CsName) | CPU Cores: $($result.CPUCores) | Memory: $($result.MemoryGB) GB"
+
+            # Format disk details
+            $diskDetails = foreach ($disk in $result.Disks) {
+                $sizeGB = [Math]::Round($disk.Size / 1GB, 2)
+                $freeGB = [Math]::Round($disk.FreeSpace / 1GB, 2)
+                "Drive $($disk.DeviceID): $freeGB GB free of $sizeGB GB"
+            }
+
+            # Write to log
+            $formatted | Out-File -FilePath $logFile -Append
+            $diskDetails | Out-File -FilePath $logFile -Append
+        } else {
+            "No data returned from $Server" | Out-File -FilePath $errorLogFile -Append
+        }
+    }
+    catch {
+        "Failed to connect to $Server. Error: $_" | Out-File -FilePath $errorLogFile -Append
+    }
+}
